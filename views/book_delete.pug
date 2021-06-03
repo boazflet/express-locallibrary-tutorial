@@ -1,0 +1,37 @@
+extends layout
+
+block content
+    h1 #{title} #{book.title}
+    
+    if book_instances.length
+        p #[strong Delete the following copies of the book from the library before deleting the book:]
+        
+        div(style='margin-left:20px;margin_top:20px')
+        
+            h4 Copies:
+            
+            dl
+            each val in book_instances
+                dt
+                    a(href=val.url) #{val.imprint}
+                p
+                if val.status=='Available'
+                    dd.text-success Copy Status: #{val.status}
+                else if val.status=='Maintenance'
+                    dd.text-danger Copy Status: #{val.status}
+                else
+                    dd.text-warning Copy Status: #{val.status}
+            
+                if val.status!='Available'
+                    p
+                        dd #[strong Due Back:]  #{val.due_back_d_t_formatted}
+                hr
+    
+    else
+        p Do you really want to delete this Book?
+        
+        form(method='POST' action='')
+            div.form-group
+                input#bookid.form-control(type='hidden', name='bookid' required='true' value='book._id')
+                
+            button.btn.btn-warning(type='submit') Delete Book

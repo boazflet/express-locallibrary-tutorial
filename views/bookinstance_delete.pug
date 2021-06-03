@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    h1 #{title}
+    
+    if bookinstance.status!='Available'
+        p #[strong The Book Copy must be returned to the library before deleting from the catalogue. The book's status is currently '#{bookinstance.status}' and is due back #{bookinstance.due_back_d_t_formatted}]
+        
+        a(href=bookinstance.url) #{bookinstance.book.title}
+        
+    else
+        p Do you really want to delete this Copy?
+        
+        form(method='POST' action='')
+            div.form-group
+                input#bookinstanceid.form-control(type='hidden', name='bookinstanceid' required='true' value='bookinstance._id')
+                
+            button.btn.btn-warning(type='submit') Delete This Copy
